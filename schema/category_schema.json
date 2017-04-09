@@ -1,0 +1,95 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "description": "Category Service response",
+    "oneOf": [
+        { "$ref": "#/definitions/success" },
+        { "$ref": "#/definitions/error" },
+        {
+            "type": "array",
+            "items": {
+                "oneOf": [
+                    { "$ref": "#/definitions/success" },
+                    { "$ref": "#/definitions/error" }
+                ]
+            }
+        }
+    ],
+    "definitions": {
+        "category_dto": {
+            "required": ["__cls__"],
+            "type": "object",
+            "properties": {
+                "__cls__": { "type": "string" },
+                "category_id": {"type": ["string", "number"]},
+                "is_main_category": {"type": "boolean"},
+                "legacy_category_id": {"type": ["number", "string"]},
+                "localized_info": {"type": "object" },
+                "market": {"type": "string", "enum": ["ios", "android"]},
+                "unified_categories": {"type":"array", "items": {"type": "number"}}
+            }
+        },
+        
+        "common": {
+            "required": [ "id", "jsonrpc" ],
+            "not": {
+                "description": "cannot have result and error at the same time",
+                "required": [ "result", "error" ]
+            },
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": [ "string", "integer", "null" ],
+                    "note": [
+                        "spec says a number which should not contain a fractional part",
+                        "We choose integer here, but this is unenforceable with some languages"
+                    ]
+                },
+                "jsonrpc": { "enum": [ "2.0" ] },
+                "result": {
+                    "type": "object",
+                    "required": ["data", "errors"],
+                    "properties": {
+                        "data": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/category_dto"
+                            }
+                        },
+                        "error": {"type": "object"}
+                    }
+                }
+            }
+        },
+        "success": {
+            "description": "A success. The result member is then required and can be anything.",
+            "allOf": [
+                { "$ref": "#/definitions/common" },
+                { "required": [ "result" ] }
+            ]
+        },
+        "error": {
+            "allOf" : [
+                { "$ref": "#/definitions/common" },
+                {
+                    "required": [ "error" ],
+                    "properties": {
+                        "error": {
+                            "type": "object",
+                            "required": [ "code", "message" ],
+                            "properties": {
+                                "code": {
+                                    "type": "integer",
+                                    "note": [ "unenforceable in some languages" ]
+                                },
+                                "message": { "type": "string" },
+                                "data": {
+                                    "description": "optional, can be anything"
+                                }
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}

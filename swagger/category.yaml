@@ -1,0 +1,66 @@
+# Copyright (c) 2015 App Annie Inc. All rights reserved.
+swagger: '2.0'
+info:
+  title: Category Service API
+  description: AppAnnie Category Service
+  version: "1.0.0"
+host: service.appannie.com
+schemes:
+  - https
+basePath: /
+produces:
+  - application/json
+paths:
+  /meta/category/({category_id}):
+    get:
+      summary: |
+      description: |
+        this is the baisc interface always returns one category info
+      parameters:
+        - name: category_id
+          in: path
+          description: unique category_id
+          required: true
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: category item
+          schema:
+            $ref: '#/definitions/Category'
+definitions:
+  Category:
+    type: object
+    properties:
+      market_id:
+        type: string
+      category_id: 
+        type: integer
+        format: int32
+      code:
+        type: string
+        description: market specified code
+      type:
+        type: string
+        description: what's this category use for
+      is_main_category:
+        type: boolean
+        description: if this category it the child of root node, it is true
+      localized_info:
+        type: object
+  CategoryLocalizedInfo:
+    type: object
+    properties:
+      language:
+        type: string
+      market_id:
+        type: string
+      category_id: 
+        type: integer
+        format: int32
+      localized_name:
+        type: string
+      localized_slug:
+        type: string
+  
+

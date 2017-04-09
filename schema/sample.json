@@ -1,0 +1,33 @@
+{
+  "id": "1",
+  "jsonrpc": "2.0",
+  "result": {
+    "data": [
+      {
+        "__cls__": "Category",
+        "category_id": 100,
+        "is_main_category": false,
+        "legacy_category_id": 1,
+        "localized_info": {
+          "name": "123",
+          "value": {
+            "c": [
+              12,
+              3,
+              4
+            ],
+            "d": false,
+            "z": 2
+          }
+        },
+        "market": "ios",
+        "unified_categories": [
+          1,
+          2,
+          3
+        ]
+      }
+    ],
+    "errors": {}
+  }
+}
